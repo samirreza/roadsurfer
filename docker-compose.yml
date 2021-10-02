@@ -1,0 +1,60 @@
+version: "3.8"
+services:
+    app:
+        build: ./docker/php
+        container_name: roadsurfer-app
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+            - ./docker/php/custome-php-ini.ini:/usr/local/etc/php/conf.d/custome-php-ini.ini
+            - ./docker/php/custome-php-fpm.conf:/usr/local/etc/php-fpm.d/www2.conf
+        networks:
+            - roadsurfer
+        depends_on:
+            - postgres
+    nginx:
+        image: nginx:alpine
+        container_name: roadsurfer-nginx
+        restart: unless-stopped
+        working_dir: /var/www/
+        ports:
+            - "${APP_PORT:-8000}:80"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx:/etc/nginx/conf.d/
+            - ./var/log/nginx:/var/log/nginx
+        networks:
+            - roadsurfer
+    postgres:
+        image: postgres:13-alpine
+        container_name: roadsurfer-postgres
+        restart: unless-stopped
+        volumes:
+            - "roadsurferDBData:/var/lib/postgresql/data"
+        environment:
+            - POSTGRES_DB=${DATABASE_NAME}
+            - POSTGRES_USER=${DATABASE_USER}
+            - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+        ports:
+            - "${DB_PORT:-5442}:5432"
+        networks:
+            - roadsurfer
+    swagger:
+        container_name: roadsurfer-swagger
+        image: swaggerapi/swagger-ui
+        depends_on:
+            - app
+        volumes:
+            - ./:/var/www
+        ports:
+            - "${SWAGGER_PORT:-8001}:8080"
+        environment:
+            - SWAGGER_JSON=/var/www/wiki/swagger.yml
+
+networks:
+    roadsurfer:
+        driver: bridge
+
+volumes:
+    roadsurferDBData:

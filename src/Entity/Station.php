@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +28,16 @@ class Station
      * @ORM\JoinColumn(nullable=false)
      */
     private City $city;
+
+    /**
+     * @ORM\OneToMany(targetEntity=StationCampervanRelation::class, mappedBy="station", orphanRemoval=true)
+     */
+    private $stationCampervanRelations;
+
+    public function __construct()
+    {
+        $this->stationCampervanRelations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -52,6 +64,32 @@ class Station
     public function setCity(City $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    public function getStationCampervanRelations(): Collection
+    {
+        return $this->stationCampervanRelations;
+    }
+
+    public function addStationCampervanRelation(StationCampervanRelation $stationCampervanRelation): self
+    {
+        if (!$this->stationCampervanRelations->contains($stationCampervanRelation)) {
+            $this->stationCampervanRelations[] = $stationCampervanRelation;
+            $stationCampervanRelation->setStation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStationCampervanRelation(StationCampervanRelation $stationCampervanRelation): self
+    {
+        if ($this->stationCampervanRelations->removeElement($stationCampervanRelation)) {
+            if ($stationCampervanRelation->getStation() === $this) {
+                $stationCampervanRelation->setStation(null);
+            }
+        }
 
         return $this;
     }

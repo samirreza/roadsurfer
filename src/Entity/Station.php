@@ -39,10 +39,16 @@ class Station
      */
     private $stationEquipmentRelations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Rent::class, mappedBy="startStation", orphanRemoval=true)
+     */
+    private $rents;
+
     public function __construct()
     {
         $this->stationCampervanRelations = new ArrayCollection();
         $this->stationEquipmentRelations = new ArrayCollection();
+        $this->rents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -89,20 +95,6 @@ class Station
         return $this;
     }
 
-    public function removeStationCampervanRelation(StationCampervanRelation $stationCampervanRelation): self
-    {
-        if ($this->stationCampervanRelations->removeElement($stationCampervanRelation)) {
-            if ($stationCampervanRelation->getStation() === $this) {
-                $stationCampervanRelation->setStation(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|StationEquipmentRelation[]
-     */
     public function getStationEquipmentRelations(): Collection
     {
         return $this->stationEquipmentRelations;
@@ -118,15 +110,8 @@ class Station
         return $this;
     }
 
-    public function removeStationEquipmentRelation(StationEquipmentRelation $stationEquipmentRelation): self
+    public function getRents(): Collection
     {
-        if ($this->stationEquipmentRelations->removeElement($stationEquipmentRelation)) {
-            // set the owning side to null (unless already changed)
-            if ($stationEquipmentRelation->getStation() === $this) {
-                $stationEquipmentRelation->setStation(null);
-            }
-        }
-
-        return $this;
+        return $this->rents;
     }
 }

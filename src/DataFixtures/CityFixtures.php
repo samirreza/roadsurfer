@@ -2,15 +2,15 @@
 
 namespace App\DataFixtures;
 
-use App\Factory\UserFactory;
+use App\Factory\CityFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class UserFixtures extends Fixture
+class CityFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        UserFactory::new()->createMany(5);
+        CityFactory::new()->createMany(5);
         $manager->flush();
     }
 }

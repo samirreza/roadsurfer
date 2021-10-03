@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,12 +33,12 @@ class Rent
     /**
      * @ORM\Column(type="date")
      */
-    private $startAt;
+    private \DateTimeInterface $startAt;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $endAt;
+    private \DateTimeInterface $endAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Campervan::class)
@@ -53,12 +55,22 @@ class Rent
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $deliverAt;
+    private \DateTimeInterface $deliverAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $getAt;
+    private \DateTimeInterface $getAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=RentEquipment::class, mappedBy="rent", orphanRemoval=true)
+     */
+    private Collection $rentEquipment;
+
+    public function __construct()
+    {
+        $this->rentEquipment = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -157,6 +169,21 @@ class Rent
     public function setGetAt(\DateTimeInterface $getAt): self
     {
         $this->getAt = $getAt;
+
+        return $this;
+    }
+
+    public function getRentEquipment(): Collection
+    {
+        return $this->rentEquipment;
+    }
+
+    public function addRentEquipment(RentEquipment $rentEquipment): self
+    {
+        if (!$this->rentEquipment->contains($rentEquipment)) {
+            $this->rentEquipment[] = $rentEquipment;
+            $rentEquipment->setRent($this);
+        }
 
         return $this;
     }

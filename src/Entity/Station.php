@@ -32,17 +32,17 @@ class Station
     /**
      * @ORM\OneToMany(targetEntity=StationCampervanRelation::class, mappedBy="station", orphanRemoval=true)
      */
-    private $stationCampervanRelations;
+    private Collection $stationCampervanRelations;
 
     /**
      * @ORM\OneToMany(targetEntity=StationEquipmentRelation::class, mappedBy="station", orphanRemoval=true)
      */
-    private $stationEquipmentRelations;
+    private Collection $stationEquipmentRelations;
 
     /**
      * @ORM\OneToMany(targetEntity=Rent::class, mappedBy="startStation", orphanRemoval=true)
      */
-    private $rents;
+    private Collection $rents;
 
     public function __construct()
     {

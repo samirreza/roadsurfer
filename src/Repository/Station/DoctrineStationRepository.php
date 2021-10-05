@@ -5,7 +5,7 @@ namespace App\Repository\Station;
 use App\Entity\Station;
 use Doctrine\ORM\EntityManagerInterface;
 
-class DoctrineStationRepository implements StationRepositoryInterface
+final class DoctrineStationRepository implements StationRepositoryInterface
 {
     private $objectRepository;
 
@@ -14,7 +14,7 @@ class DoctrineStationRepository implements StationRepositoryInterface
         $this->objectRepository = $this->entityManager->getRepository(Station::class);
     }
 
-    public function find(int $stationId): Station
+    public function find(int $stationId): ?Station
     {
         return $this->objectRepository->find($stationId);
     }

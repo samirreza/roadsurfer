@@ -6,5 +6,5 @@ use App\Entity\Campervan;
 
 interface CampervanRepositoryInterface
 {
-    public function find(int $campervanId): Campervan;
+    public function find(int $campervanId): ?Campervan;
 }

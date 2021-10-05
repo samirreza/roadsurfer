@@ -4,7 +4,9 @@ namespace App\Repository\Rent;
 
 use App\Entity\Rent;
 
-interface CityRepositoryInterface
+interface RentRepositoryInterface
 {
-    public function find(int $rentId): Rent;
+    public function find(int $rentId): ?Rent;
+
+    public function add(Rent $rent): void;
 }

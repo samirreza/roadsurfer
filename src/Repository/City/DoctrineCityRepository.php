@@ -5,7 +5,7 @@ namespace App\Repository\City;
 use App\Entity\City;
 use Doctrine\ORM\EntityManagerInterface;
 
-class DoctrineCityRepository implements CityRepositoryInterface
+final class DoctrineCityRepository implements CityRepositoryInterface
 {
     private $objectRepository;
 
@@ -14,7 +14,7 @@ class DoctrineCityRepository implements CityRepositoryInterface
         $this->objectRepository = $this->entityManager->getRepository(City::class);
     }
 
-    public function find(int $cityId): City
+    public function find(int $cityId): ?City
     {
         return $this->objectRepository->find($cityId);
     }

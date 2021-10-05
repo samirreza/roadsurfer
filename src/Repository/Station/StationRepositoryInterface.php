@@ -6,6 +6,6 @@ use App\Entity\Station;
 
 interface StationRepositoryInterface
 {
-    public function find(int $stationId): Station;
+    public function find(int $stationId): ?Station;
 }
 

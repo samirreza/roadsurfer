@@ -5,7 +5,7 @@ namespace App\Repository\User;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
-class DoctrineUserRepository implements UserRepositoryInterface
+final class DoctrineUserRepository implements UserRepositoryInterface
 {
     private $objectRepository;
 
@@ -14,7 +14,7 @@ class DoctrineUserRepository implements UserRepositoryInterface
         $this->objectRepository = $this->entityManager->getRepository(User::class);
     }
 
-    public function find(int $userId): User
+    public function find(int $userId): ?User
     {
         return $this->objectRepository->find($userId);
     }

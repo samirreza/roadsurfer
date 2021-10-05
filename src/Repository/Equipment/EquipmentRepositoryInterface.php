@@ -6,5 +6,5 @@ use App\Entity\Equipment;
 
 interface EquipmentRepositoryInterface
 {
-    public function find(int $equipmentId): Equipment;
+    public function find(int $equipmentId): ?Equipment;
 }

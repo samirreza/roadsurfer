@@ -6,5 +6,5 @@ use App\Entity\City;
 
 interface CityRepositoryInterface
 {
-    public function find(int $cityId): City;
+    public function find(int $cityId): ?City;
 }

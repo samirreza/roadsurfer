@@ -5,7 +5,7 @@ namespace App\Repository\Campervan;
 use App\Entity\Campervan;
 use Doctrine\ORM\EntityManagerInterface;
 
-class DoctrineCampervanRepository implements CampervanRepositoryInterface
+final class DoctrineCampervanRepository implements CampervanRepositoryInterface
 {
     private $objectRepository;
 
@@ -14,7 +14,7 @@ class DoctrineCampervanRepository implements CampervanRepositoryInterface
         $this->objectRepository = $this->entityManager->getRepository(Campervan::class);
     }
 
-    public function find(int $campervanId): Campervan
+    public function find(int $campervanId): ?Campervan
     {
         return $this->objectRepository->find($campervanId);
     }

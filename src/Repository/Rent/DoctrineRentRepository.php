@@ -5,7 +5,7 @@ namespace App\Repository\Rent;
 use App\Entity\Rent;
 use Doctrine\ORM\EntityManagerInterface;
 
-class DoctrineRentRepository implements CityRepositoryInterface
+final class DoctrineRentRepository implements RentRepositoryInterface
 {
     private $objectRepository;
 
@@ -14,8 +14,13 @@ class DoctrineRentRepository implements CityRepositoryInterface
         $this->objectRepository = $this->entityManager->getRepository(Rent::class);
     }
 
-    public function find(int $rentId): Rent
+    public function find(int $rentId): ?Rent
     {
         return $this->objectRepository->find($rentId);
+    }
+
+    public function add(Rent $rent): void
+    {
+        $this->entityManager->persist($rent);
     }
 }

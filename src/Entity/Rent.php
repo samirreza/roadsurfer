@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity()
@@ -33,12 +34,12 @@ class Rent
     /**
      * @ORM\Column(type="date")
      */
-    private \DateTimeInterface $startAt;
+    private DateTimeInterface $startAt;
 
     /**
      * @ORM\Column(type="date")
      */
-    private \DateTimeInterface $endAt;
+    private DateTimeInterface $endAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Campervan::class)
@@ -55,21 +56,33 @@ class Rent
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private \DateTimeInterface $deliverAt;
+    private DateTimeInterface $deliverAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private \DateTimeInterface $getAt;
+    private DateTimeInterface $getAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=RentEquipment::class, mappedBy="rent", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=RentEquipment::class, mappedBy="rent", orphanRemoval=true, cascade={"persist"})
      */
-    private Collection $rentEquipment;
+    private Collection $rentEquipments;
 
-    public function __construct()
-    {
-        $this->rentEquipment = new ArrayCollection();
+    public function __construct(
+        Station $startStation,
+        Station $endStation,
+        DateTimeInterface $startAt,
+        DateTimeInterface $endAt,
+        Campervan $campervan,
+        User $customer
+    ) {
+        $this->startStation = $startStation;
+        $this->endStation = $endStation;
+        $this->startAt = $startAt;
+        $this->endAt = $endAt;
+        $this->campervan = $campervan;
+        $this->customer = $customer;
+        $this->rentEquipments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,7 +90,7 @@ class Rent
         return $this->id;
     }
 
-    public function getStartStation(): ?Station
+    public function getStartStation(): Station
     {
         return $this->startStation;
     }
@@ -89,7 +102,7 @@ class Rent
         return $this;
     }
 
-    public function getEndStation(): ?Station
+    public function getEndStation(): Station
     {
         return $this->endStation;
     }
@@ -101,31 +114,31 @@ class Rent
         return $this;
     }
 
-    public function getStartAt(): ?\DateTimeInterface
+    public function getStartAt(): DateTimeInterface
     {
         return $this->startAt;
     }
 
-    public function setStartAt(\DateTimeInterface $startAt): self
+    public function setStartAt(DateTimeInterface $startAt): self
     {
         $this->startAt = $startAt;
 
         return $this;
     }
 
-    public function getEndAt(): ?\DateTimeInterface
+    public function getEndAt(): DateTimeInterface
     {
         return $this->endAt;
     }
 
-    public function setEndAt(\DateTimeInterface $endAt): self
+    public function setEndAt(DateTimeInterface $endAt): self
     {
         $this->endAt = $endAt;
 
         return $this;
     }
 
-    public function getCampervan(): ?Campervan
+    public function getCampervan(): Campervan
     {
         return $this->campervan;
     }
@@ -137,7 +150,7 @@ class Rent
         return $this;
     }
 
-    public function getCustomer(): ?User
+    public function getCustomer(): User
     {
         return $this->customer;
     }
@@ -149,41 +162,40 @@ class Rent
         return $this;
     }
 
-    public function getDeliverAt(): ?\DateTimeInterface
+    public function getDeliverAt(): ?DateTimeInterface
     {
         return $this->deliverAt;
     }
 
-    public function setDeliverAt(\DateTimeInterface $deliverAt): self
+    public function setDeliverAt(DateTimeInterface $deliverAt): self
     {
         $this->deliverAt = $deliverAt;
 
         return $this;
     }
 
-    public function getGetAt(): ?\DateTimeInterface
+    public function getGetAt(): ?DateTimeInterface
     {
         return $this->getAt;
     }
 
-    public function setGetAt(\DateTimeInterface $getAt): self
+    public function setGetAt(DateTimeInterface $getAt): self
     {
         $this->getAt = $getAt;
 
         return $this;
     }
 
-    public function getRentEquipment(): Collection
+    public function getRentEquipments(): Collection
     {
-        return $this->rentEquipment;
+        return $this->rentEquipments;
     }
 
-    public function addRentEquipment(RentEquipment $rentEquipment): self
+    public function addRentEquipment(Equipment $equipment, int $count): self
     {
-        if (!$this->rentEquipment->contains($rentEquipment)) {
-            $this->rentEquipment[] = $rentEquipment;
-            $rentEquipment->setRent($this);
-        }
+        $rentEquipment = new RentEquipment($equipment, $count);
+        $this->rentEquipments->add($rentEquipment);
+        $rentEquipment->setRent($this);
 
         return $this;
     }

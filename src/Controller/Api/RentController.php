@@ -4,6 +4,8 @@ namespace App\Controller\Api;
 
 use App\Request\Rent\CreateRentRequest;
 use App\Service\Rent\CreateRentService;
+use App\Request\Rent\DeliverRentRequest;
+use App\Service\Rent\DeliverRentService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +23,19 @@ class RentController extends AbstractController
         $createRentService->create($request->toCommand());
 
         return $this->json([
-            'message' => 'Rent created successfully'
+            'message' => 'Rent created successfully.'
+        ], Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route("/deliver", methods={"PATCH"}, name="deliver")
+     */
+    public function deliver(DeliverRentRequest $request, DeliverRentService $deliverRentService)
+    {
+        $deliverRentService->deliver($request->toCommand());
+
+        return $this->json([
+            'message' => 'Rent delivered successfully.'
         ], Response::HTTP_CREATED);
     }
 }

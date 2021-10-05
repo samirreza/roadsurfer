@@ -16,6 +16,7 @@ final class CreateRentRequest implements RequestInterface
     public static function getConstraints(): array
     {
         return [
+            new Assert\NotBlank(),
             new Assert\Collection([
                 'fields' => [
                     'startStationId' => [

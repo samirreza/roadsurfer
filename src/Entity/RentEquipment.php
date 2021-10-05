@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,7 +18,7 @@ class RentEquipment
     private int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Rent::class, inversedBy="rentEquipment")
+     * @ORM\ManyToOne(targetEntity=Rent::class, inversedBy="rentEquipments")
      * @ORM\JoinColumn(nullable=false)
      */
     private Rent $rent;
@@ -27,6 +28,19 @@ class RentEquipment
      * @ORM\JoinColumn(nullable=false)
      */
     private Equipment $equipment;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $count;
+
+    public function __construct(Equipment $equipment, int $count)
+    {
+        Assertion::greaterOrEqualThan($count, 1);
+
+        $this->equipment = $equipment;
+        $this->count = $count;
+    }
 
     public function getId(): ?int
     {
@@ -53,6 +67,18 @@ class RentEquipment
     public function setEquipment(Equipment $equipment): self
     {
         $this->equipment = $equipment;
+
+        return $this;
+    }
+
+    public function getCount(): int
+    {
+        return $this->count;
+    }
+
+    public function setCount(int $count): self
+    {
+        $this->count = $count;
 
         return $this;
     }

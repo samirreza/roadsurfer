@@ -5,7 +5,7 @@ namespace App\Request;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
-class RequestDTOValidationException extends Exception
+final class RequestDTOValidationException extends Exception
 {
     public function __construct(
         array $message = [],

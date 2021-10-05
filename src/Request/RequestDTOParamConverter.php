@@ -9,7 +9,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 
-class RequestDTOParamConverter implements ParamConverterInterface
+final class RequestDTOParamConverter implements ParamConverterInterface
 {
     public function __construct(
         private ValidatorInterface $validator,
@@ -19,6 +19,10 @@ class RequestDTOParamConverter implements ParamConverterInterface
 
     public function supports(ParamConverter $configuration)
     {
+        if ($configuration->getClass() === null) {
+            return false;
+        }
+
         $reflection = new \ReflectionClass($configuration->getClass());
         if ($reflection->implementsInterface(RequestInterface::class)) {
             return true;
@@ -29,19 +33,23 @@ class RequestDTOParamConverter implements ParamConverterInterface
 
     public function apply(Request $request, ParamConverter $configuration)
     {
+        $constraints = $configuration->getClass()::getConstraints();
+        $violations = $this->validator->validate(
+            json_decode($request->getContent(), true),
+            $constraints
+        );
+        if (count($violations) > 0) {
+            throw new RequestDTOValidationException(
+                $this->normalizeViolations($violations)
+            );
+        }
+
         $object = $this->serializer->deserialize(
             $request->getContent(),
             $configuration->getClass(),
             'json',
             ['disable_type_enforcement' => true]
         );
-
-        $violations = $this->validator->validate($object);
-        if (count($violations) > 0) {
-            throw new RequestDTOValidationException(
-                $this->normalizeViolations($violations)
-            );
-        }
 
         $request->attributes->set($configuration->getName(), $object);
     }

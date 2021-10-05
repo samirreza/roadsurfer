@@ -5,7 +5,7 @@ namespace App\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
-class RequestDTOValidationExceptionListener
+final class RequestDTOValidationExceptionListener
 {
     public function onKernelException(ExceptionEvent $event)
     {

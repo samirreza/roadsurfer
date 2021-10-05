@@ -56,12 +56,12 @@ class Rent
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private DateTimeInterface $deliverAt;
+    private ?DateTimeInterface $deliverAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private DateTimeInterface $getAt;
+    private ?DateTimeInterface $getAt;
 
     /**
      * @ORM\OneToMany(targetEntity=RentEquipment::class, mappedBy="rent", orphanRemoval=true, cascade={"persist"})

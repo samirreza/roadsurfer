@@ -2,6 +2,8 @@
 
 namespace App\Controller\Api;
 
+use App\Request\Rent\GetRentRequest;
+use App\Service\Rent\GetRentService;
 use App\Request\Rent\CreateRentRequest;
 use App\Service\Rent\CreateRentService;
 use App\Request\Rent\DeliverRentRequest;
@@ -18,7 +20,7 @@ class RentController extends AbstractController
     /**
      * @Route("", methods={"POST"}, name="create")
      */
-    public function create(CreateRentRequest $request, CreateRentService $createRentService)
+    public function createRent(CreateRentRequest $request, CreateRentService $createRentService)
     {
         $createRentService->create($request->toCommand());
 
@@ -30,12 +32,24 @@ class RentController extends AbstractController
     /**
      * @Route("/deliver", methods={"PATCH"}, name="deliver")
      */
-    public function deliver(DeliverRentRequest $request, DeliverRentService $deliverRentService)
+    public function deliverRent(DeliverRentRequest $request, DeliverRentService $deliverRentService)
     {
         $deliverRentService->deliver($request->toCommand());
 
         return $this->json([
             'message' => 'Rent delivered successfully.'
+        ], Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route("/get", methods={"PATCH"}, name="get")
+     */
+    public function getRent(GetRentRequest $request, GetRentService $getRentService)
+    {
+        $getRentService->deliver($request->toCommand());
+
+        return $this->json([
+            'message' => 'Rent get successfully.'
         ], Response::HTTP_CREATED);
     }
 }

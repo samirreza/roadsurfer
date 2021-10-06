@@ -10,3 +10,158 @@ info:
 servers:
   - url: http://localhost:8000
     description: Local Server
+paths:
+    /api/rent:
+        post:
+            tags:
+                - 'Rent'
+            summary: 'Rent for campervan and equipments'
+            requestBody:
+                $ref: '#/components/requestBodies/CreateRentRequest'
+            responses:
+                201:
+                    $ref: '#/components/responses/Created'
+    /api/deliver:
+        patch:
+            tags:
+                - 'Rent'
+            summary: 'Deliver rent'
+            requestBody:
+                $ref: '#/components/requestBodies/DeliverRentRequest'
+            responses:
+                200:
+                    $ref: '#/components/responses/Created'
+    /api/take:
+        patch:
+            tags:
+                - 'Rent'
+            summary: 'Take rent'
+            requestBody:
+                $ref: '#/components/requestBodies/TakeRentRequest'
+            responses:
+                200:
+                    $ref: '#/components/responses/Created'
+    /api/station/equipment-report/{stationId}/{date}:
+        get:
+            tags:
+                - 'Station'
+            summary: 'Equipment report for station in the given date'
+            parameters:
+                - $ref: '#/components/parameters/stationId'
+                - $ref: '#/components/parameters/date'
+components:
+    parameters:
+        stationId:
+            name: stationId
+            in: path
+            description: 'Station Id'
+            required: true
+            style: simple
+            schema:
+                type: integer
+                required: true
+                example: 1
+        date:
+            name: date
+            in: path
+            description: 'Date'
+            required: true
+            style: simple
+            schema:
+                type: date
+                required: true
+                example: "2021-10-06"
+    responses:
+        Created:
+            description: 'The object has been created successfully'
+        Ok:
+            description: 'Ok'
+            content:
+                application/json:
+                    schema:
+                        type: object
+    requestBodies:
+        CreateRentRequest:
+            description: 'Rent data.'
+            required: true
+            content:
+                application/json:
+                    schema:
+                        properties:
+                            data:
+                                $ref: '#/components/schemas/CreateRentRequest'
+        DeliverRentRequest:
+            description: 'Deliver rent data.'
+            required: true
+            content:
+                application/json:
+                    schema:
+                        properties:
+                            data:
+                                $ref: '#/components/schemas/DeliverRentRequest'
+        TakeRentRequest:
+            description: 'Deliver rent data.'
+            required: true
+            content:
+                application/json:
+                    schema:
+                        properties:
+                            data:
+                                $ref: '#/components/schemas/TakeRentRequest'
+    schemas:
+        CreateRentRequest:
+            type: object
+            properties:
+                startStationId:
+                    type: integer
+                    required: true
+                    example: 1
+                endStationId:
+                    type: integer
+                    required: true
+                    example: 1
+                campervanId:
+                    type: integer
+                    required: true
+                    example: 1
+                customerId:
+                    type: integer
+                    required: true
+                    example: 1
+                startAt:
+                    type: date
+                    required: true
+                    example: "2021-10-06"
+                endAt:
+                    type: date
+                    required: true
+                    example: "2021-10-06"
+                equipments:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/RentEquipment'
+        RentEquipment:
+            type: object
+            properties:
+                equipmentId:
+                    type: integer
+                    required: true
+                    example: 1
+                count:
+                    type: integer
+                    required: true
+                    example: 1
+        DeliverRentRequest:
+            type: object
+            properties:
+                rentId:
+                    type: integer
+                    required: true
+                    example: 1
+        TakeRentRequest:
+            type: object
+            properties:
+                rentId:
+                    type: integer
+                    required: true
+                    example: 1

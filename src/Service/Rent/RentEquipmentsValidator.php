@@ -3,6 +3,7 @@
 namespace App\Service\Rent;
 
 use DateTimeInterface;
+use App\Service\Station\StationEquipmentsCalculator;
 
 final class RentEquipmentsValidator
 {

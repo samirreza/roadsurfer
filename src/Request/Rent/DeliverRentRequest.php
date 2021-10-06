@@ -47,7 +47,7 @@ class DeliverRentRequest implements RequestInterface
     {
         return new DeliverRentCommand(
             $this->rentId,
-            DateTime::createFromFormat('Y-m-d', date('Y-m-d'))
+            new DateTime(date('Y-m-d'))
         );
     }
 }

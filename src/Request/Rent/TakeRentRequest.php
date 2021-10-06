@@ -47,7 +47,7 @@ class TakeRentRequest implements RequestInterface
     {
         return new TakeRentCommand(
             $this->rentId,
-            DateTime::createFromFormat('Y-m-d', date('Y-m-d'))
+            new DateTime(date('Y-m-d'))
         );
     }
 }

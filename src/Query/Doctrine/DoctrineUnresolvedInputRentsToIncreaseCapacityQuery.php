@@ -14,7 +14,7 @@ final class DoctrineUnresolvedInputRentsToIncreaseCapacityQuery implements Unres
     ) {
     }
 
-    public function execute(int $stationId, DateTimeInterface $bookStartAt): array
+    public function execute(int $stationId, DateTimeInterface $bookStartAt, bool $includeTodayRents = true): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
 
@@ -30,8 +30,8 @@ final class DoctrineUnresolvedInputRentsToIncreaseCapacityQuery implements Unres
                         $queryBuilder->expr()->gt('rent.endAt', ':today'),
                         $queryBuilder->expr()->lte('rent.endAt', ':bookStartAt')
                     ),
-                    date('H:i') < '11:00' ? $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->eq('rent.endtAt', ':today')
+                    date('H:i') < '11:00' && $includeTodayRents ? $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->eq('rent.endAt', ':today')
                     ) : null
                 )
             )

@@ -6,6 +6,6 @@ use DateTimeInterface;
 
 interface UnresolvedInputRentsToIncreaseCapacityQueryInterface
 {
-    public function execute(int $stationId, DateTimeInterface $bookStartAt): array;
+    public function execute(int $stationId, DateTimeInterface $bookStartAt, bool $includeTodayRents = true): array;
 }
 

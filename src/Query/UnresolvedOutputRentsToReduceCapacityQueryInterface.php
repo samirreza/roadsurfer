@@ -6,5 +6,5 @@ use DateTimeInterface;
 
 interface UnresolvedOutputRentsToReduceCapacityQueryInterface
 {
-    public function execute(int $stationId, DateTimeInterface $bookEndAt): array;
+    public function execute(int $stationId, DateTimeInterface $bookEndAt, bool $includeTodayRents = true): array;
 }

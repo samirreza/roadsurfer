@@ -178,6 +178,7 @@ class Rent implements ContainsEvents, RecordsEvents
     public function setDeliverAt(DateTimeInterface $deliverAt): self
     {
         Assertion::null($this->deliverAt, 'Can not get redeliver rent.');
+        Assertion::eq($this->startAt, $deliverAt, 'Delivery date must equal to start date');
         $this->deliverAt = $deliverAt;
         $this->record(new RentDeliveredEvent($this->getId()));
 
@@ -193,6 +194,7 @@ class Rent implements ContainsEvents, RecordsEvents
     {
         Assertion::notNull($this->deliverAt, 'Can not get undelivered rent.');
         Assertion::null($this->getAt, 'Can not retake rent.');
+        // Assertion::eq($this->endAt, $getAt, 'Take date must equal to end date');
         $this->getAt = $getAt;
         $this->record(new RentTakenEvent($this->getId()));
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Rent;
+namespace App\Service\Station;
 
 use DateTimeInterface;
 use App\DTO\RentEquipmentDTO;
@@ -20,11 +20,12 @@ final class StationEquipmentsCalculator
     public function calculate(
         int $stationId,
         DateTimeInterface $bookStartAt,
-        DateTimeInterface $bookEndAt
+        DateTimeInterface $bookEndAt,
+        bool $includeTodayRents = true
     ): array {
         $currentStateMapping = $this->getMappingForCurrentState($stationId);
-        $reductionMapping = $this->getMappingForReduction($stationId, $bookEndAt);
-        $increaseMapping = $this->getMappingForIncrease($stationId, $bookStartAt);
+        $reductionMapping = $this->getMappingForReduction($stationId, $bookEndAt, $includeTodayRents);
+        $increaseMapping = $this->getMappingForIncrease($stationId, $bookStartAt, $includeTodayRents);
 
         $rentEquipmentDTOs = [];
         foreach (array_keys($currentStateMapping + $reductionMapping + $increaseMapping) as $key) {
@@ -51,10 +52,10 @@ final class StationEquipmentsCalculator
         return $currentStateMapping;
     }
 
-    private function getMappingForReduction(int $stationId, DateTimeInterface $bookEndAt): array
+    private function getMappingForReduction(int $stationId, DateTimeInterface $bookEndAt, bool $includeTodayRents): array
     {
         $reductionMapping = [];
-        $rents = $this->unresolvedOutputRentsToReduceCapacityQuery->execute($stationId, $bookEndAt);
+        $rents = $this->unresolvedOutputRentsToReduceCapacityQuery->execute($stationId, $bookEndAt, $includeTodayRents);
         foreach ($rents as $rent) {
             $rentEquipments = $rent->getRentEquipments();
             foreach ($rentEquipments as $rentEquipment) {
@@ -69,10 +70,10 @@ final class StationEquipmentsCalculator
         return $reductionMapping;
     }
 
-    private function getMappingForIncrease(int $stationId, DateTimeInterface $bookStartAt): array
+    private function getMappingForIncrease(int $stationId, DateTimeInterface $bookStartAt, bool $includeTodayRents): array
     {
         $increaseMapping = [];
-        $rents = $this->unresolvedInputRentsToIncreaseCapacityQuery->execute($stationId, $bookStartAt);
+        $rents = $this->unresolvedInputRentsToIncreaseCapacityQuery->execute($stationId, $bookStartAt, $includeTodayRents);
         foreach ($rents as $rent) {
             $rentEquipments = $rent->getRentEquipments();
             foreach ($rentEquipments as $rentEquipment) {

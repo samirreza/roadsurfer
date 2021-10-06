@@ -34,12 +34,22 @@ class StationEquipmentRelation
      */
     private int $count;
 
+    public function __construct(
+        Station $station,
+        Equipment $equipment,
+        int $count
+    ) {
+        $this->station = $station;
+        $this->equipment = $equipment;
+        $this->count = $count;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getStation(): ?Station
+    public function getStation(): Station
     {
         return $this->station;
     }
@@ -51,7 +61,7 @@ class StationEquipmentRelation
         return $this;
     }
 
-    public function getEquipment(): ?Equipment
+    public function getEquipment(): Equipment
     {
         return $this->equipment;
     }
@@ -63,7 +73,7 @@ class StationEquipmentRelation
         return $this;
     }
 
-    public function getCount(): ?int
+    public function getCount(): int
     {
         return $this->count;
     }

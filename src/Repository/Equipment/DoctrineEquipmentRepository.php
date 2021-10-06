@@ -18,4 +18,11 @@ final class DoctrineEquipmentRepository implements EquipmentRepositoryInterface
     {
         return $this->objectRepository->find($equipmentId);
     }
+
+    public function findByIds(array $equipmentIds): array
+    {
+        return $this->objectRepository->findBy([
+            'id' => $equipmentIds,
+        ]);
+    }
 }

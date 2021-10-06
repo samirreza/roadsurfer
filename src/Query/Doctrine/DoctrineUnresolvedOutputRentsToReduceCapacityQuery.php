@@ -14,7 +14,7 @@ final class DoctrineUnresolvedOutputRentsToReduceCapacityQuery implements Unreso
     ) {
     }
 
-    public function execute(int $stationId, DateTimeInterface $bookEndAt): array
+    public function execute(int $stationId, DateTimeInterface $bookEndAt, bool $includeTodayRents = true): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
 
@@ -30,7 +30,7 @@ final class DoctrineUnresolvedOutputRentsToReduceCapacityQuery implements Unreso
                         $queryBuilder->expr()->gt('rent.startAt', ':today'),
                         $queryBuilder->expr()->lt('rent.startAt', ':bookEndAt')
                     ),
-                    date('H:i') < '17:00' ? $queryBuilder->expr()->andX(
+                    date('H:i') < '17:00' && $includeTodayRents ? $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->eq('rent.startAt', ':today')
                     ) : null
                 )

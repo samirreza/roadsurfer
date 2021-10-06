@@ -23,4 +23,9 @@ class DoctrineStationEquipmentRelationRepository implements StationEquipmentRela
             'equipment' => $equipmentIds,
         ]);
     }
+
+    public function add(StationEquipmentRelation $stationEquipmentRelation): void
+    {
+        $this->entityManager->persist($stationEquipmentRelation);
+    }
 }

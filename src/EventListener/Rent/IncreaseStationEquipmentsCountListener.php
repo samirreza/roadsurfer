@@ -3,17 +3,17 @@
 namespace App\EventListener;
 
 use App\Event\Rent\RentTakenEvent;
-use App\Service\Station\StationEquipmentsCountReducer;
+use App\Service\Station\StationEquipmentsCountManipulator;
 
 class IncreaseStationEquipmentsCountListener
 {
-    public function __construct(private StationEquipmentsCountReducer $stationEquipmentsCountReducer)
+    public function __construct(private StationEquipmentsCountManipulator $stationEquipmentsCountManipulator)
     {
     }
 
     public function increase(RentTakenEvent $event)
     {
-        $this->stationEquipmentsCountReducer->increaseByDeliveredRentId($event->getRentId());
+        $this->stationEquipmentsCountManipulator->increaseByDeliveredRentId($event->getRentId());
     }
 }
 

@@ -33,11 +33,11 @@ services:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 
-    App\EventListener\StationEquipmentsCountReducerListener:
+    App\EventListener\Rent\StationEquipmentsCountReducerListener:
         tags:
             - { name: kernel.event_listener, event: App\Event\Rent\RentDeliveredEvent, method: reduce }
 
-    App\EventListener\IncreaseStationEquipmentsCountListener:
+    App\EventListener\Rent\IncreaseStationEquipmentsCountListener:
         tags:
             - { name: kernel.event_listener, event: App\Event\Rent\RentTakenEvent, method: increase }
 

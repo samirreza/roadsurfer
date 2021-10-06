@@ -11,7 +11,7 @@ final class StationEquipmentRelationFixtures extends Fixture implements Dependen
 {
     public function load(ObjectManager $manager): void
     {
-        StationEquipmentRelationFactory::new()->createMany(20);
+        StationEquipmentRelationFactory::createMany(4);
         $manager->flush();
     }
 

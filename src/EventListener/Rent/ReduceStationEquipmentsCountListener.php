@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventListener;
+namespace App\EventListener\Rent;
 
 use App\Event\Rent\RentDeliveredEvent;
 use App\Service\Station\StationEquipmentsCountManipulator;

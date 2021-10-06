@@ -10,7 +10,7 @@ final class EquipmentFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        EquipmentFactory::new()->createMany(10);
+        EquipmentFactory::createMany(2);
         $manager->flush();
     }
 }

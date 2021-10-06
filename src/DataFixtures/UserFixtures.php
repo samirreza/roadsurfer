@@ -10,7 +10,7 @@ final class UserFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        UserFactory::new()->createMany(5);
+        UserFactory::createMany(1);
         $manager->flush();
     }
 }

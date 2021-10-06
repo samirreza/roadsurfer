@@ -10,7 +10,7 @@ final class CampervanFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        CampervanFactory::new()->createMany(5);
+        CampervanFactory::createOne();
         $manager->flush();
     }
 }

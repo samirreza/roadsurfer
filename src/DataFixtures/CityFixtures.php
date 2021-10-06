@@ -10,7 +10,7 @@ final class CityFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        CityFactory::new()->createMany(5);
+        CityFactory::createMany(2);
         $manager->flush();
     }
 }

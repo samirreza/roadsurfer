@@ -11,7 +11,7 @@ final class StationFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        StationFactory::new()->createMany(5);
+        StationFactory::createMany(2);
         $manager->flush();
     }
 

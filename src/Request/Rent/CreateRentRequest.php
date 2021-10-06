@@ -173,8 +173,8 @@ final class CreateRentRequest implements RequestInterface
             $this->endStationId,
             $this->campervanId,
             $this->customerId,
-            DateTime::createFromFormat('Y-m-d', $this->startAt),
-            DateTime::createFromFormat('Y-m-d', $this->endAt),
+            new DateTime(date('Y-m-d', strtotime($this->startAt))),
+            new DateTime(date('Y-m-d', strtotime($this->endAt))),
             $rentEquipmentDTOs
         );
     }

@@ -2,15 +2,18 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity()
  */
 class Station
 {
+    public const END_TAKE_TIME = '11:00';
+    public const END_DELIVERY_TIME = '17:00';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

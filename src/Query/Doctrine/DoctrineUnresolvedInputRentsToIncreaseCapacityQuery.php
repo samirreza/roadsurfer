@@ -4,6 +4,7 @@ namespace App\Query\Doctrine;
 
 use App\Entity\Rent;
 use DateTimeInterface;
+use App\Entity\Station;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Query\UnresolvedInputRentsToIncreaseCapacityQueryInterface;
 
@@ -30,7 +31,7 @@ final class DoctrineUnresolvedInputRentsToIncreaseCapacityQuery implements Unres
                         $queryBuilder->expr()->gt('rent.endAt', ':today'),
                         $queryBuilder->expr()->lte('rent.endAt', ':bookStartAt')
                     ),
-                    date('H:i') < '11:00' && $includeTodayRents ? $queryBuilder->expr()->andX(
+                    date('H:i') < Station::END_TAKE_TIME && $includeTodayRents ? $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->eq('rent.endAt', ':today')
                     ) : null
                 )

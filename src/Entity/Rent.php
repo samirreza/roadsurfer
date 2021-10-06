@@ -2,16 +2,24 @@
 
 namespace App\Entity;
 
+use Assert\Assertion;
 use DateTimeInterface;
+use App\Event\RecordsEvents;
+use App\Event\ContainsEvents;
 use Doctrine\ORM\Mapping as ORM;
+use App\Event\Rent\RentTakenEvent;
+use App\Event\PrivateEventRecorder;
+use App\Event\Rent\RentDeliveredEvent;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity()
  */
-class Rent
+class Rent implements ContainsEvents, RecordsEvents
 {
+    use PrivateEventRecorder;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -169,7 +177,9 @@ class Rent
 
     public function setDeliverAt(DateTimeInterface $deliverAt): self
     {
+        Assertion::null($this->deliverAt, 'Can not get redeliver rent.');
         $this->deliverAt = $deliverAt;
+        $this->record(new RentDeliveredEvent($this->getId()));
 
         return $this;
     }
@@ -181,7 +191,10 @@ class Rent
 
     public function setGetAt(DateTimeInterface $getAt): self
     {
+        Assertion::notNull($this->deliverAt, 'Can not get undelivered rent.');
+        Assertion::null($this->getAt, 'Can not retake rent.');
         $this->getAt = $getAt;
+        $this->record(new RentTakenEvent($this->getId()));
 
         return $this;
     }

@@ -6,7 +6,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use App\Service\Transaction\TransactionServiceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class RequestTransactionSubscriber implements EventSubscriberInterface
+final class ManageTransactionForRequestSubscriber implements EventSubscriberInterface
 {
     public function __construct(private TransactionServiceInterface $transactionService)
     {

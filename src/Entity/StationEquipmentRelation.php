@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -70,6 +71,21 @@ class StationEquipmentRelation
     public function setCount(int $count): self
     {
         $this->count = $count;
+
+        return $this;
+    }
+
+    public function reduceCount(int $count): self
+    {
+        Assertion::lessOrEqualThan($count, $this->count, 'Count con not be negative.');
+        $this->count -= $count;
+
+        return $this;
+    }
+
+    public function increaseCount(int $count): self
+    {
+        $this->count += $count;
 
         return $this;
     }

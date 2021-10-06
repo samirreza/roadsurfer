@@ -4,7 +4,7 @@ namespace App\Command;
 
 use DateTimeInterface;
 
-class GetRentCommand
+class TakeRentCommand
 {
     public function __construct(
         private int $rentId,

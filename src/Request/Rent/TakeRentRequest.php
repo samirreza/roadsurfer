@@ -4,12 +4,12 @@ namespace App\Request\Rent;
 
 use DateTime;
 use App\Entity\Rent;
-use App\Command\GetRentCommand;
 use App\Validator\EntityExists;
+use App\Command\TakeRentCommand;
 use App\Request\RequestInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class GetRentRequest implements RequestInterface
+class TakeRentRequest implements RequestInterface
 {
     public static function getConstraints(): array
     {
@@ -43,9 +43,9 @@ class GetRentRequest implements RequestInterface
         return $this->rentId;
     }
 
-    public function toCommand(): GetRentCommand
+    public function toCommand(): TakeRentCommand
     {
-        return new GetRentCommand(
+        return new TakeRentCommand(
             $this->rentId,
             DateTime::createFromFormat('Y-m-d', date('Y-m-d'))
         );

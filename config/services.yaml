@@ -29,9 +29,17 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
 
-    App\EventListener\DomainExceptionListener:
+    App\EventSubscriber\DomainEventsSubscriber:
         tags:
-            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+            - { name: doctrine.event_subscriber, connection: default }
+
+    App\EventListener\StationEquipmentsCountReducerListener:
+        tags:
+            - { name: kernel.event_listener, event: App\Event\Rent\RentDeliveredEvent, method: reduce }
+
+    App\EventListener\IncreaseStationEquipmentsCountListener:
+        tags:
+            - { name: kernel.event_listener, event: App\Event\Rent\RentTakenEvent, method: increase }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -8,7 +8,7 @@ use App\Exception\RentNotFoundException;
 use App\Exception\RentAlreadyDeliveredException;
 use App\Repository\Rent\RentRepositoryInterface;
 
-class DeliverRentService
+final class DeliverRentService
 {
     public function __construct(
         private RentRepositoryInterface $rentRepository

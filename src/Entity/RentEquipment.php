@@ -47,7 +47,7 @@ class RentEquipment
         return $this->id;
     }
 
-    public function getRent(): ?Rent
+    public function getRent(): Rent
     {
         return $this->rent;
     }
@@ -59,7 +59,7 @@ class RentEquipment
         return $this;
     }
 
-    public function getEquipment(): ?Equipment
+    public function getEquipment(): Equipment
     {
         return $this->equipment;
     }
